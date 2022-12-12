@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- CSS file -->
+    <link rel="stylesheet" href="style.css" />
+    <title>Student Management System</title>
+  </head>
+  <body>
+    <div class="NavBar">
+      <ul>
+        <li><button class="addCourseSectionB">Add Course</button></li>
+        <li><button class="addStudentSectionB">Add Student</button></li>
+        <li>
+          <button class="addStudentsToCourseSectionB">
+            Add Students To Course
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="addCourseSection container">
+      <div class="addCourse">
+        <form>
+          <strong><label>Course Id:</label></strong><br />
+          <input id="cId" type="number" placeholder="Course Id" min="0" /><br />
+          <strong><label>Course Name:</label></strong><br />
+          <input id="cName" type="text" placeholder="Course Name" /><br />
+          <strong><label>Point Scale:</label></strong><br />
+          <select id="pScale">
+            <option value="10">10 Point Scale</option>
+            <option value="7">7 Point Scale</option>
+          </select><br />
+          <button id="addCourseButton" type="button">Add Course</button>
+        </form>
+      </div>
+      <div class="courseListsContainer">
+        <ul class="courseLists">
+          <h3>Courses</h3>
+        </ul>
+      </div>
+    </div>
+    <div class="addStudentSection">
+      <div class="container">
+        <div>21</div>
+        <div>22</div>
+      </div>
+    </div>
+    <div class="addStudentsToCourseSection">
+      <div class="container">
+        <div>31</div>
+        <div>32</div>
+      </div>
+    </div>
+
+    <!-- JS file -->
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/student.js"></script>
+  </body>
+</html>

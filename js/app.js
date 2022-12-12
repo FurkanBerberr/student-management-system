@@ -1,0 +1,170 @@
+// Imports
+import { Student } from "./student.js"
+
+// Global variables
+let courses = []
+
+// Classes
+function Course(id, name, pointScale){
+    this.id = id 
+    this.name = name
+    this.pointScale = pointScale
+}
+
+
+// Selects
+const addCourseSection = document.querySelector(".addCourseSection")
+const addStudentSection = document.querySelector(".addStudentSection")
+const addStudentsToCourseSection = document.querySelector(".addStudentsToCourseSection")
+
+const addCourseSectionB = document.querySelector(".addCourseSectionB")
+const addStudentSectionB = document.querySelector(".addStudentSectionB")
+const addStudentsToCourseSectionB = document.querySelector(".addStudentsToCourseSectionB")
+
+const addCourseButton = document.querySelector("#addCourseButton")
+
+
+// Events
+addCourseSectionB.addEventListener("click", selectAddCourseSection)
+addStudentSectionB.addEventListener("click", selectAddStudentSection)
+addStudentsToCourseSectionB.addEventListener("click", selectAddStudentsToCourseSection)
+
+addCourseButton.addEventListener("click", createCourse)
+
+
+// Functions
+
+// Shows only Select Add Course Section
+function selectAddCourseSection(){
+    addCourseSection.style.display = ""
+    addStudentSection.style.display = "none"
+    addStudentsToCourseSection.style.display = "none"
+}
+
+// Shows only Select Add Student Section
+function selectAddStudentSection(){
+    addCourseSection.style.display = "none"
+    addStudentSection.style.display = "unset"
+    addStudentsToCourseSection.style.display = "none"
+}
+
+// Shows only Select Add Students To The Course Section
+function selectAddStudentsToCourseSection(){
+    addCourseSection.style.display = "none"
+    addStudentSection.style.display = "none"
+    addStudentsToCourseSection.style.display = "unset"
+}
+
+
+// Creates course object and add into the courses array
+function createCourseObj(id, name, pointScale){
+    let course1 = new Course(id, name, pointScale)
+    courses.push(course1)
+}
+
+function createCourse(){
+
+    // Create DIV
+    const courseDiv = document.createElement("div")
+    courseDiv.classList.add("course")
+
+    // Create LI
+    const courseElement = document.createElement("li")
+
+    // Create INPUTS
+    const cId = document.querySelector("#cId")
+    const inputId = document.createElement("input")
+    inputId.classList.add("courseId")
+    inputId.type = "number"
+    inputId.value = cId.value
+    inputId.setAttribute("readonly", "readonly")
+    inputId.setAttribute("min", 0)
+
+    const cName = document.querySelector("#cName")
+    const inputName = document.createElement("input")
+    inputName.classList.add("courseName")
+    inputName.type = "text"
+    inputName.value = cName.value
+    inputName.setAttribute("readonly", "readonly")
+
+    // Check if inputs are valid and full
+    if(cId.value <= 0 || cName.value == "" || cId.value == ""){
+        alert("Check the imputs are valid and full")
+        return
+    }
+
+    // Creates the course object
+    const pointScaleInp = document.querySelector("#pScale")
+    let course = new Course(cId.value, cName.value, pointScaleInp.value)
+    courses.push(course)
+
+    // Append INPUTS and LI into the DIV
+    courseElement.appendChild(inputId)
+    courseElement.appendChild(inputName)
+    courseDiv.appendChild(courseElement)
+
+    // Create BUTTONS
+    const editButton = document.createElement("button")
+    const editIcon = document.createElement("i")
+    editIcon.classList.add("fa-solid")
+    editIcon.classList.add("fa-pen-to-square")
+    editButton.appendChild(editIcon)
+    editButton.classList.add("edit")
+
+    const deleteButton = document.createElement("button")
+    const deleteIcon = document.createElement("i")
+    deleteIcon.classList.add("fa-solid")
+    deleteIcon.classList.add("fa-trash")
+    deleteButton.appendChild(deleteIcon)
+    deleteButton.classList.add("delete")
+
+    // Append BUTTONS into DIV
+    courseDiv.appendChild(editButton)
+    courseDiv.appendChild(deleteButton)
+
+    // Append final div into Course Lists
+    const courseLists = document.querySelector(".courseLists")
+    courseLists.appendChild(courseDiv)
+
+    // Clear INPUTS
+    cId.value = ""
+    cName.value = ""
+
+    // Edit element
+    editButton.addEventListener("click", function(){
+        if(editIcon.classList[1] == "fa-pen-to-square"){
+            editIcon.classList.remove("fa-pen-to-square")
+            editIcon.classList.add("fa-check")
+            inputId.removeAttribute("readonly")
+            inputName.removeAttribute("readonly")
+            inputId.focus()
+            firstId = inputId.value
+        }else{
+            if(inputId.value <= 0 || inputName.value == "" || inputId.value == ""){
+                alert("Check the edit imputs are valid and full")
+                return
+            }
+            courses.forEach(function(oneCourse){
+                if(oneCourse.id == firstId){
+                    oneCourse.id = inputId.value
+                    oneCourse.name = inputName.value
+                }
+            })
+            editIcon.classList.remove("fa-check")
+            editIcon.classList.add("fa-pen-to-square")
+            inputId.setAttribute("readonly", "readonly")
+            inputName.setAttribute("readonly", "readonly")
+        }
+    })
+
+    // Delete element 
+    deleteButton.addEventListener("click", function(){
+        for (let i = 0; i < courses.length; i++) {
+            if (courses[i].id == inputId.value) {
+                courses.splice(i, 1)
+            }
+        }
+        courseLists.removeChild(courseDiv)
+    })
+}
+
