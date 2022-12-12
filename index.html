@@ -46,8 +46,22 @@
     </div>
     <div class="addStudentSection">
       <div class="container">
-        <div>21</div>
-        <div>22</div>
+        <div class="addStudent">
+          <form>
+            <strong><label>Student Id:</label></strong><br />
+            <input id="sId" type="number" placeholder="Student Id" min="0" /><br />
+            <strong><label>Student Name:</label></strong><br />
+            <input id="sName" type="text" placeholder="Student Name" /><br />
+            <strong><label>Student Surname:</label></strong><br />
+            <input id="sSurname" type="text" placeholder="Student Surname" /><br />
+            <button id="addStudentButton" type="button">Add Student</button>
+          </form>
+        </div>
+        <div class="studentListsContainer">
+          <ul class="studentLists">
+            <h3>Students</h3>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="addStudentsToCourseSection">

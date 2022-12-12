@@ -47,13 +47,13 @@ body{
 /*----------------Select Add Course Section----------------*/
 
 /*----------------Left Column----------------*/
-.addCourse{
+.addCourse, .addStudent{
     text-align: center;
     font-size: 17px;
     margin-top: 50px;
 }
 
-.addCourse input{
+.addCourse input, .addStudent input{
     border-radius: 10px;
     width: 75%;
     padding: 12px 20px;
@@ -62,7 +62,7 @@ body{
 
 }
 
-.addCourse button{
+.addCourse button, .addStudent button{
     border-radius: 10px;
     width: 75%;
     padding: 12px 20px;
@@ -70,7 +70,7 @@ body{
 
 }
 
-.addCourse button:hover{
+.addCourse button:hover, .addStudent button:hover{
     opacity: 0.7;
 }
 
@@ -85,28 +85,28 @@ body{
 
 /*----------------Right Column----------------*/
 
-.courseListsContainer{
+.courseListsContainer, .studentListsContainer{
     display: flex;
     justify-content: center;
     margin-top: 50px;
 }
 
-.courseLists{
+.courseLists, .studentLists{
     list-style: none;
 }
 
-.courseLists h3{
+.courseLists h3, .studentLists h3{
     margin-left: 10px;
 }
 
-.course{
+.course, .student{
     margin: 10px;
     background: white;
     display: flex;
     align-items: center;
 }
 
-.course input{
+.course input , .student input{
     font-size: 17px;
     padding-left: 5px;
 }

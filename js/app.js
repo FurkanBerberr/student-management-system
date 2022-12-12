@@ -1,8 +1,10 @@
 // Imports
-import { Student } from "./student.js"
+import { students } from "./student.js"
+
 
 // Global variables
 let courses = []
+var firstId
 
 // Classes
 function Course(id, name, pointScale){
@@ -53,13 +55,6 @@ function selectAddStudentsToCourseSection(){
     addCourseSection.style.display = "none"
     addStudentSection.style.display = "none"
     addStudentsToCourseSection.style.display = "unset"
-}
-
-
-// Creates course object and add into the courses array
-function createCourseObj(id, name, pointScale){
-    let course1 = new Course(id, name, pointScale)
-    courses.push(course1)
 }
 
 function createCourse(){
