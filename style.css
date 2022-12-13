@@ -116,7 +116,7 @@ body{
     min-width: 55px;
 }
 
-.edit, .delete{
+.edit, .delete, .addStudentB{
     background: #333;
     color: white;
     border: none;

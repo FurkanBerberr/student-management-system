@@ -1,5 +1,5 @@
 // Imports
-import { students } from "./student.js"
+import { getCourse } from "./addStudentsToCourse.js"
 
 
 // Global variables
@@ -11,6 +11,7 @@ function Course(id, name, pointScale){
     this.id = id 
     this.name = name
     this.pointScale = pointScale
+    this.student = []
 }
 
 
@@ -68,6 +69,20 @@ function createCourse(){
 
     // Create INPUTS
     const cId = document.querySelector("#cId")
+
+    
+    // Checks the id is already taken
+    let exist = false
+    courses.forEach(function(oneCourse){
+        if(oneCourse.id == cId.value){
+            exist = true
+        }
+    })
+    if(exist){
+        alert("Courses can not have same id")
+        return
+    }
+
     const inputId = document.createElement("input")
     inputId.classList.add("courseId")
     inputId.type = "number"
@@ -113,8 +128,16 @@ function createCourse(){
     deleteButton.appendChild(deleteIcon)
     deleteButton.classList.add("delete")
 
+    const addStudentButton = document.createElement("button")
+    const addStudentIcon = document.createElement("i")
+    addStudentIcon.classList.add("fa-solid")
+    addStudentIcon.classList.add("fa-user-plus")
+    addStudentButton.appendChild(addStudentIcon)
+    addStudentButton.classList.add("addStudentB")
+
     // Append BUTTONS into DIV
     courseDiv.appendChild(editButton)
+    courseDiv.appendChild(addStudentButton)
     courseDiv.appendChild(deleteButton)
 
     // Append final div into Course Lists
@@ -159,6 +182,25 @@ function createCourse(){
         }
     })
 
+    // Add Student element
+    addStudentButton.addEventListener("click", function(){
+        addCourseSection.style.display = "none"
+        addStudentSection.style.display = "none"
+        addStudentsToCourseSection.style.display = "unset"
+
+        const info = document.getElementById("info")
+        info.innerHTML = inputId.value + " " + inputName.value + " " + pointScaleInp.value + " Point Scale"
+
+        let selectedCourse
+        for (let i = 0; i < courses.length; i++) {
+            if (courses[i].id == inputId.value) {
+                selectedCourse = courses[i]
+            }
+        }
+        getCourse(selectedCourse)
+
+    })
+
     // Delete element 
     deleteButton.addEventListener("click", function(){
         for (let i = 0; i < courses.length; i++) {
@@ -170,3 +212,5 @@ function createCourse(){
     })
 }
 
+
+export { courses, Course }

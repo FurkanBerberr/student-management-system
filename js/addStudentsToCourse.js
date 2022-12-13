@@ -1,84 +1,112 @@
-// Global variables
-let students = []
-var firstId
+// Imports
+import { students, Student } from "./student.js"
+import { courses, Course } from "./app.js"
 
-// Classes
-function Student(id, name, surname){
-    this.id = id 
-    this.name = name
-    this.surname = surname
-    this.course = []
-}
+
+// Global variables
+var selectedCourse
 
 
 // Selects
-const addStudentButton = document.querySelector("#addStudentButton")
+const addStudentToCourseButton = document.querySelector("#addStudentToCourseButton")
 
 // Events
-addStudentButton.addEventListener("click", createStudent)
+addStudentToCourseButton.addEventListener("click", addStudentsToCourse)
+
 
 // Functions
-function createStudent(){
+function addStudentsToCourse(){
 
     // Create DIV
-    const studentDiv = document.createElement("div")
-    studentDiv.classList.add("student")
+    const studentCourseDiv = document.createElement("div")
+    studentCourseDiv.classList.add("courseStudent")
+    studentCourseDiv.classList.add(selectedCourse.id)
 
-    // Create LI
-    const studentElement = document.createElement("li")
+    const studentId = document.querySelector("#studentId")
 
-    // Create INPUTS
-    const sId = document.querySelector("#sId")
-
-    
     // Checks the id is already taken
     let exist = false
-    students.forEach(function(oneStudent){
-        if(oneStudent.id == sId.value){
+    selectedCourse.student.forEach(function(student){
+        if(student.id == studentId.value){
             exist = true
         }
     })
     if(exist){
-        alert("Students can not have same id")
+        alert("Student already added to the course")
         return
     }
 
+    // Find the right student
+    let selectedStudent
+    students.forEach(function(student){
+        if(student.id == studentId.value){
+            selectedStudent = student
+        }
+    })
+    if(typeof selectedStudent === "undefined"){
+        alert("Student does not exist")
+        return
+    }
+    
+    // Create LI
+    const studentCourseElement = document.createElement("li")
+    studentCourseElement.classList.add(selectedStudent.id)
+
+
+    // Create INPUTS
     const inputId = document.createElement("input")
-    inputId.classList.add("studentId")
+    inputId.classList.add("courseStudentId")
     inputId.type = "number"
-    inputId.value = sId.value
+    inputId.value = studentId.value
     inputId.setAttribute("readonly", "readonly")
     inputId.setAttribute("min", 0)
 
-    const sName = document.querySelector("#sName")
     const inputName = document.createElement("input")
-    inputName.classList.add("studentName")
+    inputName.classList.add("courseStudentName")
     inputName.type = "text"
-    inputName.value = sName.value
+    inputName.value = selectedStudent.name
     inputName.setAttribute("readonly", "readonly")
 
-    const sSurname = document.querySelector("#sSurname")
     const inputSurname = document.createElement("input")
-    inputSurname.classList.add("studentSurname")
+    inputSurname.classList.add("courseStudentSurname")
     inputSurname.type = "text"
-    inputSurname.value = sSurname.value
+    inputSurname.value = selectedStudent.surname
     inputSurname.setAttribute("readonly", "readonly")
+    
+    const courseStudentMidScore = document.querySelector("#sMidtermScore")
+    const midtermScore = document.createElement("input")
+    midtermScore.classList.add("courseStudentMidScore")
+    midtermScore.type = "number"
+    midtermScore.value = courseStudentMidScore.value
+    midtermScore.setAttribute("readonly", "readonly")
+    midtermScore.setAttribute("min", 0)
+    
+    const sFinalScore = document.querySelector("#sFinalScore")
+    const finalScore = document.createElement("input")
+    finalScore.classList.add("courseStudentMidScore")
+    finalScore.type = "number"
+    finalScore.value = sFinalScore.value
+    finalScore.setAttribute("readonly", "readonly")
+    finalScore.setAttribute("min", 0)
 
     // Check if inputs are valid and full
-    if(sId.value <= 0 || sName.value == "" || sId.value == "" || sSurname.value == ""){
+    if(studentId.value <= 0 || courseStudentMidScore.value <= 0 && courseStudentMidScore.value > 100 || sFinalScore.value <= 0 && sFinalScore.value > 100){
         alert("Check the imputs are valid and full")
         return
     }
 
-    // Creates the student object
-    let student = new Student(sId.value, sName.value, sSurname.value)
-    students.push(student)
+    // Adding students grades into student obj
+    console.log(selectedStudent.course)
+    selectedStudent.course.push([selectedCourse.id, courseStudentMidScore.value, sFinalScore.value])
+    console.log(selectedStudent.course)
 
     // Append INPUTS and LI into the DIV
-    studentElement.appendChild(inputId)
-    studentElement.appendChild(inputName)
-    studentElement.appendChild(inputSurname)
-    studentDiv.appendChild(studentElement)
+    studentCourseElement.appendChild(inputId)
+    studentCourseElement.appendChild(inputName)
+    studentCourseElement.appendChild(inputSurname)
+    studentCourseElement.appendChild(midtermScore)
+    studentCourseElement.appendChild(finalScore)
+    studentCourseDiv.appendChild(studentCourseElement)
 
     // Create BUTTONS
     const editButton = document.createElement("button")
@@ -96,49 +124,12 @@ function createStudent(){
     deleteButton.classList.add("delete")
 
     // Append BUTTONS into DIV
-    studentDiv.appendChild(editButton)
-    studentDiv.appendChild(deleteButton)
+    studentCourseDiv.appendChild(editButton)
+    studentCourseDiv.appendChild(deleteButton)
 
     // Append final div into Student Lists
-    const studentLists = document.querySelector(".studentLists")
-    studentLists.appendChild(studentDiv)
-    
-    // While creating new student i am also adding the students
-    // into Add Studens To The Course Section to see all students 
-    // and select students according the their ids
-
-    // Create LI for Course List
-    const studentCourseElement = document.createElement("li")
-    studentCourseElement.classList.add(sId.value)
-
-    // Creat INPUT for Course List
-    const studentInputId = document.createElement("input")
-    studentInputId.classList.add("courseStudentId")
-    studentInputId.type = "number"
-    studentInputId.value = sId.value
-    studentInputId.setAttribute("readonly", "readonly")
-    studentInputId.setAttribute("min", 0)
-
-    const studentInputName = document.createElement("input")
-    studentInputName.classList.add("courseStudentName")
-    studentInputName.type = "text"
-    studentInputName.value = sName.value
-    studentInputName.setAttribute("readonly", "readonly")
-
-    const studentInputSurname = document.createElement("input")
-    studentInputSurname.classList.add("courseStudentSurname")
-    studentInputSurname.type = "text"
-    studentInputSurname.value = sSurname.value
-    studentInputSurname.setAttribute("readonly", "readonly")
-
-    // Append INPUTS into the LI
-    studentCourseElement.appendChild(studentInputId)
-    studentCourseElement.appendChild(studentInputName)
-    studentCourseElement.appendChild(studentInputSurname)
-
-    // Append LI into Course Inner Student Lists
-    const courseInnerStudentLists = document.querySelector(".courseInnerStudentLists")
-    courseInnerStudentLists.appendChild(studentCourseElement)
+    const courseStudentsList = document.querySelector(".courseStudentsList")
+    courseStudentsList.appendChild(studentCourseDiv)
 
     // Clear INPUTS
     sId.value = ""
@@ -174,27 +165,14 @@ function createStudent(){
             })
             // Editing Add Studens To The Course Sections values
             const courseS = document.getElementsByClassName(firstId);
-            console.log(courseS)
-            console.log(courseS.length)
-            console.log(courseS[0])
-            console.log(courseS[1])
-            for(var i = courseS.length - 1; i >= 0; i--) {
+            for(var i = 0; i < courseS.length; i++) {
+                console.log(courseS[i])
                 const courseSChild = courseS[i].childNodes
-                console.log(i + courseSChild)
                 courseSChild[0].value = inputId.value
-                console.log(courseSChild[0])
-                console.log(courseSChild[0].value)
                 courseSChild[1].value = inputName.value
-                console.log(courseSChild[1])
-                console.log(courseSChild[1].value)
                 courseSChild[2].value = inputSurname.value
-                console.log(courseSChild[2])
-                console.log(courseSChild[2].value)
-                console.log(courseS[i])
-                courseS[i].classList.add(inputId.value)
-                console.log(courseS[i])
-                courseS[i].classList.remove(`${firstId}`)
-                console.log(courseS[i])
+                studentCourseElement.classList.remove(firstId)
+                studentCourseElement.classList.add(inputId.value)
             }
 
 
@@ -220,6 +198,13 @@ function createStudent(){
         const courseS = document.getElementById(inputId.value)
         courseInnerStudentLists.removeChild(courseS)
     })
+
 }
 
-export { students, Student }
+
+function getCourse(course){
+    selectedCourse = course
+}
+
+
+export { getCourse }
