@@ -66,8 +66,39 @@
     </div>
     <div class="addStudentsToCourseSection">
       <div class="container">
-        <div>31</div>
-        <div>32</div>
+        <div class="selectedCourse">
+          <div class="info">
+            <h2>3005 Web Design 10 scale</h2><br>
+          </div>
+          <form>
+            <strong><label>Student Id:</label></strong><br />
+            <input id="studentId" type="number" placeholder="Student Id" min="0" /><br />
+            <strong><label>Midterm Score:</label></strong><br />
+            <input id="sMidtermScore" type="number" placeholder="Midterm Score" min="0" /><br />
+            <strong><label>Final Score:</label></strong><br />
+            <input id="sFinalScore" type="number" placeholder="Final Score" min="0" /><br />
+            <button id="addStudentToCourseButton" type="button">Add Student To Course</button><br /><br />
+          </form>
+        </div>
+        <div class="courseStudentsListContainer">
+          <ul class="courseStudentsList">
+            <ul class="courseInnerStudentLists">
+              <h3>Students</h3>
+            </ul>
+            <h3>Course Students</h3>
+            <div class="courseStudent">
+              <li>
+                <input class="courseStudentId" type="number" readonly="readonly" min="0">
+                <input class="courseStudentName" type="text" readonly="readonly">
+                <input class="courseStudentSurname" type="text" readonly="readonly">
+                <input class="courseStudentMidScore" type="number" readonly="readonly" min="0">
+                <input class="courseStudentFScore" type="number" readonly="readonly" min="0">
+              </li>
+              <button class="edit"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button class="delete"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </ul>
+        </div>
       </div>
     </div>
 

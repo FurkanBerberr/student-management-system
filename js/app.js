@@ -128,25 +128,32 @@ function createCourse(){
     // Edit element
     editButton.addEventListener("click", function(){
         if(editIcon.classList[1] == "fa-pen-to-square"){
+            // Changing the icon for edit button
             editIcon.classList.remove("fa-pen-to-square")
             editIcon.classList.add("fa-check")
+            // Giving access to the user to change inputs
             inputId.removeAttribute("readonly")
             inputName.removeAttribute("readonly")
             inputId.focus()
+            // Storing the first id to check later
             firstId = inputId.value
         }else{
+            // Checking the edited values are valid or not
             if(inputId.value <= 0 || inputName.value == "" || inputId.value == ""){
                 alert("Check the edit imputs are valid and full")
                 return
             }
+            // If they valid changing the stored student values
             courses.forEach(function(oneCourse){
                 if(oneCourse.id == firstId){
                     oneCourse.id = inputId.value
                     oneCourse.name = inputName.value
                 }
             })
+            // Changing the icon for edit button
             editIcon.classList.remove("fa-check")
             editIcon.classList.add("fa-pen-to-square")
+            // Changing the icon for edit button
             inputId.setAttribute("readonly", "readonly")
             inputName.setAttribute("readonly", "readonly")
         }

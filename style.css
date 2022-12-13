@@ -32,9 +32,6 @@ body{
     background-color: #111;
 }
 
-.NavBar li:last-child {
-    float: right;
-}
 
 /*----------------Sections----------------*/
 
@@ -47,13 +44,13 @@ body{
 /*----------------Select Add Course Section----------------*/
 
 /*----------------Left Column----------------*/
-.addCourse, .addStudent{
+.addCourse, .addStudent, .selectedCourse{
     text-align: center;
     font-size: 17px;
     margin-top: 50px;
 }
 
-.addCourse input, .addStudent input{
+.addCourse input, .addStudent input, .selectedCourse input{
     border-radius: 10px;
     width: 75%;
     padding: 12px 20px;
@@ -62,7 +59,7 @@ body{
 
 }
 
-.addCourse button, .addStudent button{
+.addCourse button, .addStudent button, .selectedCourse button{
     border-radius: 10px;
     width: 75%;
     padding: 12px 20px;
@@ -70,7 +67,7 @@ body{
 
 }
 
-.addCourse button:hover, .addStudent button:hover{
+.addCourse button:hover, .addStudent button:hover, .selectedCourse button:hover{
     opacity: 0.7;
 }
 
@@ -85,28 +82,28 @@ body{
 
 /*----------------Right Column----------------*/
 
-.courseListsContainer, .studentListsContainer{
+.courseListsContainer, .studentListsContainer, .courseStudentsListContainer{
     display: flex;
     justify-content: center;
     margin-top: 50px;
 }
 
-.courseLists, .studentLists{
+.courseLists, .studentLists, .courseStudentsList,.courseStudentsList ul{
     list-style: none;
 }
 
-.courseLists h3, .studentLists h3{
+.courseLists h3, .studentLists h3, .courseStudentsList h3{
     margin-left: 10px;
 }
 
-.course, .student{
+.course, .student, .courseStudent{
     margin: 10px;
     background: white;
     display: flex;
     align-items: center;
 }
 
-.course input , .student input{
+.course input , .student input, .courseStudent input{
     font-size: 17px;
     padding-left: 5px;
 }
@@ -140,4 +137,16 @@ body{
 /*----------------Select Add Students To The Course Section----------------*/
 .addStudentsToCourseSection{
     display: none;
+}
+
+.courseStudentName, .courseStudentSurname{
+    max-width: 160px;
+}
+
+.courseStudentId{
+    max-width: 50px;
+}
+
+.courseStudentMidScore, .courseStudentFScore{
+    max-width: 45px;
 }
