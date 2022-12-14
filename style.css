@@ -116,7 +116,7 @@ body{
     min-width: 55px;
 }
 
-.edit, .delete, .addStudentB{
+.edit, .delete, .info, .addStudentB{
     background: #333;
     color: white;
     border: none;
@@ -130,7 +130,7 @@ body{
 
 
 /*----------------Select Add Student Section----------------*/
-.addStudentSection{
+.addStudentSection, .studentInfoSection{
     display: none;
 }
 
@@ -147,6 +147,6 @@ body{
     max-width: 50px;
 }
 
-.courseStudentMidScore, .courseStudentFScore{
+.courseStudentMidScore, .courseStudentFScore, .letterGrade{
     max-width: 45px;
 }

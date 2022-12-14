@@ -1,3 +1,6 @@
+// Imports
+import { courses, Course } from "./app.js"
+
 // Global variables
 let students = []
 var firstId
@@ -94,9 +97,17 @@ function createStudent(){
     deleteIcon.classList.add("fa-trash")
     deleteButton.appendChild(deleteIcon)
     deleteButton.classList.add("delete")
+    
+    const infoButton = document.createElement("button")
+    const infoIcon = document.createElement("i")
+    infoIcon.classList.add("fa-solid")
+    infoIcon.classList.add("fa-circle-info")
+    infoButton.appendChild(infoIcon)
+    infoButton.classList.add("info")
 
     // Append BUTTONS into DIV
     studentDiv.appendChild(editButton)
+    studentDiv.appendChild(infoButton)
     studentDiv.appendChild(deleteButton)
 
     // Append final div into Student Lists
@@ -138,7 +149,9 @@ function createStudent(){
 
     // Append LI into Course Inner Student Lists
     const courseInnerStudentLists = document.querySelector(".courseInnerStudentLists")
-    courseInnerStudentLists.appendChild(studentCourseElement)
+    const containerDiv = document.createElement("div")
+    containerDiv.appendChild(studentCourseElement)
+    courseInnerStudentLists.appendChild(containerDiv)
 
     // Clear INPUTS
     sId.value = ""
@@ -174,27 +187,13 @@ function createStudent(){
             })
             // Editing Add Studens To The Course Sections values
             const courseS = document.getElementsByClassName(firstId);
-            console.log(courseS)
-            console.log(courseS.length)
-            console.log(courseS[0])
-            console.log(courseS[1])
             for(var i = courseS.length - 1; i >= 0; i--) {
                 const courseSChild = courseS[i].childNodes
-                console.log(i + courseSChild)
                 courseSChild[0].value = inputId.value
-                console.log(courseSChild[0])
-                console.log(courseSChild[0].value)
                 courseSChild[1].value = inputName.value
-                console.log(courseSChild[1])
-                console.log(courseSChild[1].value)
                 courseSChild[2].value = inputSurname.value
-                console.log(courseSChild[2])
-                console.log(courseSChild[2].value)
-                console.log(courseS[i])
                 courseS[i].classList.add(inputId.value)
-                console.log(courseS[i])
                 courseS[i].classList.remove(`${firstId}`)
-                console.log(courseS[i])
             }
 
 
@@ -208,6 +207,50 @@ function createStudent(){
         }
     })
 
+    // Info button
+    infoButton.addEventListener("click", function(){
+        const addStudentSection = document.querySelector(".addStudentSection")
+        const studentInfoSection = document.querySelector(".studentInfoSection")
+        studentInfoSection.style.display = "unset"
+        addStudentSection.style.display = "none"
+
+        let studentInfoList = document.querySelector(".studentInfoList")
+        studentInfoList.remove()
+        studentInfoList = document.createElement("ul")
+        studentInfoList.classList.add("studentInfoList")
+
+        // Create LI
+        const studentElement = document.createElement("li")
+
+        // Create H1 for title
+        const studentTitle = document.createElement("h1")
+        studentTitle.innerHTML = inputId.value + " " + inputName.value + " " + inputSurname.value
+
+        let selectedStudent
+        for (let i = 0; i < students.length; i++) {
+            if (students[i].id == inputId.value) {
+                selectedStudent = students[i]
+            }
+        }  
+
+        studentElement.appendChild(studentTitle)
+
+        selectedStudent.course.forEach(function(studentCourse){
+            courses.forEach(function(selectedCourse){
+                if(studentCourse[0] == selectedCourse.id){
+                    const grades = document.createElement("h1")
+                    grades.innerHTML = selectedCourse.id + " " + selectedCourse.name + " " + selectedCourse.pointScale + " " + studentCourse[1] + " " + studentCourse[2] + " " + studentCourse[3] + " "
+
+                    studentElement.appendChild(grades)
+                }
+            })
+        })
+
+        studentInfoList.appendChild(studentElement)
+        studentInfoSection.appendChild(studentInfoList)
+
+    })
+
     // Delete element 
     deleteButton.addEventListener("click", function(){
         // Deleting the stored student from array
@@ -217,8 +260,18 @@ function createStudent(){
             }
         }
         studentLists.removeChild(studentDiv)
-        const courseS = document.getElementById(inputId.value)
-        courseInnerStudentLists.removeChild(courseS)
+        const courseS = document.getElementsByClassName(inputId.value)
+        for(var i = courseS.length - 1; i >= 0; i--) {
+            const parrentDiv = courseS[i].parentElement
+            parrentDiv.remove()
+        }
+        courses.forEach(function(selectedCourse){
+            for (let i = 0; i < selectedCourse.student.length; i++) {
+                if (selectedCourse.student[i].id == inputId.value) {
+                    selectedCourse.student.splice(i, 1)
+                }
+            }
+        })
     })
 }
 

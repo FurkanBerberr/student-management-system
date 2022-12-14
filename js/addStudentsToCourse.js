@@ -90,15 +90,23 @@ function addStudentsToCourse(){
     finalScore.setAttribute("min", 0)
 
     // Check if inputs are valid and full
-    if(studentId.value <= 0 || courseStudentMidScore.value <= 0 && courseStudentMidScore.value > 100 || sFinalScore.value <= 0 && sFinalScore.value > 100){
+    if(studentId.value <= 0 || courseStudentMidScore.value <= 0 || courseStudentMidScore.value > 100 || sFinalScore.value <= 0 || sFinalScore.value > 100){
         alert("Check the imputs are valid and full")
         return
     }
 
+    // Calculate student letter grades
+    const letterGrade = calculateLetterGrade(courseStudentMidScore.value, sFinalScore.value, selectedCourse.pointScale)
+    const inputLetterGrade = document.createElement("input")
+    inputLetterGrade.classList.add("letterGrade")
+    inputLetterGrade.type = "text"
+    inputLetterGrade.value = letterGrade
+    inputLetterGrade.setAttribute("readonly", "readonly")
+
+
     // Adding students grades into student obj
-    console.log(selectedStudent.course)
-    selectedStudent.course.push([selectedCourse.id, courseStudentMidScore.value, sFinalScore.value])
-    console.log(selectedStudent.course)
+    selectedStudent.course.push([selectedCourse.id, courseStudentMidScore.value, sFinalScore.value, letterGrade])
+    selectedCourse.student.push(selectedStudent)
 
     // Append INPUTS and LI into the DIV
     studentCourseElement.appendChild(inputId)
@@ -106,6 +114,7 @@ function addStudentsToCourse(){
     studentCourseElement.appendChild(inputSurname)
     studentCourseElement.appendChild(midtermScore)
     studentCourseElement.appendChild(finalScore)
+    studentCourseElement.appendChild(inputLetterGrade)
     studentCourseDiv.appendChild(studentCourseElement)
 
     // Create BUTTONS
@@ -127,14 +136,14 @@ function addStudentsToCourse(){
     studentCourseDiv.appendChild(editButton)
     studentCourseDiv.appendChild(deleteButton)
 
-    // Append final div into Student Lists
+    // Append final div into Course Student Lists
     const courseStudentsList = document.querySelector(".courseStudentsList")
     courseStudentsList.appendChild(studentCourseDiv)
 
     // Clear INPUTS
-    sId.value = ""
-    sName.value = ""
-    sSurname.value = ""
+    studentId.value = ""
+    courseStudentMidScore.value = ""
+    sFinalScore.value = ""
 
     // Edit element
     editButton.addEventListener("click", function(){
@@ -143,62 +152,92 @@ function addStudentsToCourse(){
             editIcon.classList.remove("fa-pen-to-square")
             editIcon.classList.add("fa-check")
             // Giving access to the user to change inputs
-            inputId.removeAttribute("readonly")
-            inputName.removeAttribute("readonly")
-            inputSurname.removeAttribute("readonly")
-            inputId.focus()
-            // Storing the first id to check later
-            firstId = inputId.value
+            midtermScore.removeAttribute("readonly")
+            finalScore.removeAttribute("readonly")
+            midtermScore.focus()
         }else{
             // Checking the edited values are valid or not
-            if(inputId.value <= 0 || inputName.value == "" || inputId.value == "" || inputSurname.value == ""){
+            if(midtermScore.value <= 0 || midtermScore.value > 100 || finalScore.value <= 0 || finalScore.value > 100){
                 alert("Check the edit imputs are valid and full")
                 return
             }
             // If they valid changing the stored student values
-            students.forEach(function(oneStudent){
-                if(oneStudent.id == firstId){
-                    oneStudent.id = inputId.value
-                    oneStudent.name = inputName.value
-                    oneStudent.surname = inputSurname.value
+            students.forEach(function(selectedStudent){
+                if(selectedStudent.id == inputId.value){
+                    selectedStudent.course.forEach(function(studentCourse){
+                        if(studentCourse[0] = selectedCourse.id){
+                            studentCourse[1] = midtermScore.value
+                            studentCourse[2] = finalScore.value
+                            studentCourse[3] = calculateLetterGrade(midtermScore.value, finalScore.value, selectedCourse.pointScale)
+                        }
+                    })
                 }
             })
-            // Editing Add Studens To The Course Sections values
-            const courseS = document.getElementsByClassName(firstId);
-            for(var i = 0; i < courseS.length; i++) {
-                console.log(courseS[i])
-                const courseSChild = courseS[i].childNodes
-                courseSChild[0].value = inputId.value
-                courseSChild[1].value = inputName.value
-                courseSChild[2].value = inputSurname.value
-                studentCourseElement.classList.remove(firstId)
-                studentCourseElement.classList.add(inputId.value)
-            }
 
-
+            inputLetterGrade.value = calculateLetterGrade(midtermScore.value, finalScore.value, selectedCourse.pointScale)
             // Changing the icon for edit button
             editIcon.classList.remove("fa-check")
             editIcon.classList.add("fa-pen-to-square")
             // Not giving access to the user to change inputs
-            inputId.setAttribute("readonly", "readonly")
-            inputName.setAttribute("readonly", "readonly")
-            inputSurname.setAttribute("readonly", "readonly")
+            midtermScore.setAttribute("readonly", "readonly")
+            finalScore.setAttribute("readonly", "readonly")
         }
     })
 
     // Delete element 
     deleteButton.addEventListener("click", function(){
         // Deleting the stored student from array
-        for (let i = 0; i < students.length; i++) {
-            if (students[i].id == inputId.value) {
-                students.splice(i, 1)
+        for (let i = 0; i < selectedCourse.student.length; i++) {
+            if (selectedCourse.student[i].id == inputId.value) {
+                selectedCourse.student.splice(i, 1)
             }
         }
-        studentLists.removeChild(studentDiv)
-        const courseS = document.getElementById(inputId.value)
-        courseInnerStudentLists.removeChild(courseS)
+        students.forEach(function(selectedStudent){
+            if(selectedStudent.id == inputId.value){
+                for (let i = 0; i < selectedStudent.course.length; i++) {
+                    if (selectedStudent.course[i][0] == selectedCourse.id) {
+                        selectedStudent.course.splice(i, 1)
+                    }
+                }
+            }
+        })
+        courseStudentsList.removeChild(studentCourseDiv)
     })
 
+}
+
+// Calculates letter grade
+function calculateLetterGrade(midtermScore, finalScore, pointScale){
+    let result = (midtermScore * 0.4) + (finalScore * 0.6)
+    if(pointScale == 10){
+        console.log(10)
+        switch (true) {
+            case result >= 90:
+                return "A"
+            case result >= 80:
+                return "B"
+            case result >= 70:
+                return "C"
+            case result >= 60:
+                return "D"
+            case result >= 0:
+                return "F"
+        }
+    }else{
+        console.log(7)
+        switch (true) {
+            case result >= 93:
+                return "A"
+            case result >= 82:
+                return "B"
+            case result >= 77:
+                return "C"
+            case result >= 70:
+                return "D"
+            case result >= 0:
+                return "F"
+        }
+    }
 }
 
 

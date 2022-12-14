@@ -1,5 +1,6 @@
 // Imports
 import { getCourse } from "./addStudentsToCourse.js"
+import { students, Student } from "./student.js"
 
 
 // Global variables
@@ -19,10 +20,10 @@ function Course(id, name, pointScale){
 const addCourseSection = document.querySelector(".addCourseSection")
 const addStudentSection = document.querySelector(".addStudentSection")
 const addStudentsToCourseSection = document.querySelector(".addStudentsToCourseSection")
+const studentInfoSection = document.querySelector(".studentInfoSection")
 
 const addCourseSectionB = document.querySelector(".addCourseSectionB")
 const addStudentSectionB = document.querySelector(".addStudentSectionB")
-const addStudentsToCourseSectionB = document.querySelector(".addStudentsToCourseSectionB")
 
 const addCourseButton = document.querySelector("#addCourseButton")
 
@@ -30,7 +31,6 @@ const addCourseButton = document.querySelector("#addCourseButton")
 // Events
 addCourseSectionB.addEventListener("click", selectAddCourseSection)
 addStudentSectionB.addEventListener("click", selectAddStudentSection)
-addStudentsToCourseSectionB.addEventListener("click", selectAddStudentsToCourseSection)
 
 addCourseButton.addEventListener("click", createCourse)
 
@@ -42,6 +42,7 @@ function selectAddCourseSection(){
     addCourseSection.style.display = ""
     addStudentSection.style.display = "none"
     addStudentsToCourseSection.style.display = "none"
+    studentInfoSection.style.display = "none"
 }
 
 // Shows only Select Add Student Section
@@ -49,14 +50,9 @@ function selectAddStudentSection(){
     addCourseSection.style.display = "none"
     addStudentSection.style.display = "unset"
     addStudentsToCourseSection.style.display = "none"
+    studentInfoSection.style.display = "none"
 }
 
-// Shows only Select Add Students To The Course Section
-function selectAddStudentsToCourseSection(){
-    addCourseSection.style.display = "none"
-    addStudentSection.style.display = "none"
-    addStudentsToCourseSection.style.display = "unset"
-}
 
 function createCourse(){
 
@@ -173,6 +169,13 @@ function createCourse(){
                     oneCourse.name = inputName.value
                 }
             })
+
+            students.forEach(function(selectedStudent){
+                selectedStudent.course.forEach(function(studentCourse){
+                    studentCourse[0] = inputId.value
+                })
+            })
+
             // Changing the icon for edit button
             editIcon.classList.remove("fa-check")
             editIcon.classList.add("fa-pen-to-square")
@@ -188,8 +191,14 @@ function createCourse(){
         addStudentSection.style.display = "none"
         addStudentsToCourseSection.style.display = "unset"
 
-        const info = document.getElementById("info")
-        info.innerHTML = inputId.value + " " + inputName.value + " " + pointScaleInp.value + " Point Scale"
+        const allCourseStudents = document.getElementsByClassName("courseStudent")
+        for(var i = allCourseStudents.length - 1; i >= 0; i--) {
+            allCourseStudents[i].style.display = "none"
+        }
+        const oneCourseStudents = document.getElementsByClassName(inputId.value)
+        for(var i = oneCourseStudents.length - 1; i >= 0; i--) {
+            oneCourseStudents[i].style.display = ""
+        }
 
         let selectedCourse
         for (let i = 0; i < courses.length; i++) {
@@ -197,6 +206,10 @@ function createCourse(){
                 selectedCourse = courses[i]
             }
         }
+
+        const info = document.getElementById("info")
+        info.innerHTML = inputId.value + " " + inputName.value + " " + selectedCourse.pointScale + " Point Scale"
+
         getCourse(selectedCourse)
 
     })
@@ -207,6 +220,17 @@ function createCourse(){
             if (courses[i].id == inputId.value) {
                 courses.splice(i, 1)
             }
+        }
+        students.forEach(function(selectedStudent){
+            for (let i = 0; i < selectedStudent.course.length; i++) {
+                if (selectedStudent.course[i][0] == inputId.value) {
+                    selectedStudent.course.splice(i, 1)
+                }
+            }
+        })
+        const oneCourseStudents = document.getElementsByClassName(inputId.value)
+        for(var i = oneCourseStudents.length - 1; i >= 0; i--) {
+            oneCourseStudents[i].remove()
         }
         courseLists.removeChild(courseDiv)
     })
