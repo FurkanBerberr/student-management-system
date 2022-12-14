@@ -165,7 +165,7 @@ function addStudentsToCourse(){
             students.forEach(function(selectedStudent){
                 if(selectedStudent.id == inputId.value){
                     selectedStudent.course.forEach(function(studentCourse){
-                        if(studentCourse[0] = selectedCourse.id){
+                        if(studentCourse[0] == selectedCourse.id){
                             studentCourse[1] = midtermScore.value
                             studentCourse[2] = finalScore.value
                             studentCourse[3] = calculateLetterGrade(midtermScore.value, finalScore.value, selectedCourse.pointScale)
@@ -210,7 +210,6 @@ function addStudentsToCourse(){
 function calculateLetterGrade(midtermScore, finalScore, pointScale){
     let result = (midtermScore * 0.4) + (finalScore * 0.6)
     if(pointScale == 10){
-        console.log(10)
         switch (true) {
             case result >= 90:
                 return "A"
@@ -224,7 +223,6 @@ function calculateLetterGrade(midtermScore, finalScore, pointScale){
                 return "F"
         }
     }else{
-        console.log(7)
         switch (true) {
             case result >= 93:
                 return "A"

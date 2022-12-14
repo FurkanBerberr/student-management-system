@@ -235,18 +235,75 @@ function createStudent(){
 
         studentElement.appendChild(studentTitle)
 
+        const table = document.createElement("table")
+        const tableRowHeader = document.createElement("tr")
+        const tableCourseId = document.createElement("th")
+        tableCourseId.innerHTML = "Course Id"
+        tableRowHeader.appendChild(tableCourseId)
+        const tableCourseName = document.createElement("th")
+        tableCourseName.innerHTML = "Course Name"
+        tableRowHeader.appendChild(tableCourseName)
+        const tableCoursePointScale = document.createElement("th")
+        tableCoursePointScale.innerHTML = "Course Point Scale"
+        tableRowHeader.appendChild(tableCoursePointScale)
+        const tableMidterm = document.createElement("th")
+        tableMidterm.innerHTML = "Midter Grade"
+        tableRowHeader.appendChild(tableMidterm)
+        const tableFinal = document.createElement("th")
+        tableFinal.innerHTML = "Final Grade"
+        tableRowHeader.appendChild(tableFinal)
+        const tableLetter = document.createElement("th")
+        tableLetter.innerHTML = "Letter Grade"
+        tableRowHeader.appendChild(tableLetter)
+
+        table.appendChild(tableRowHeader)
+        
+        var sumAvg = 0
+
         selectedStudent.course.forEach(function(studentCourse){
             courses.forEach(function(selectedCourse){
                 if(studentCourse[0] == selectedCourse.id){
-                    const grades = document.createElement("h1")
-                    grades.innerHTML = selectedCourse.id + " " + selectedCourse.name + " " + selectedCourse.pointScale + " " + studentCourse[1] + " " + studentCourse[2] + " " + studentCourse[3] + " "
+                    let tableRow = document.createElement("tr")
 
-                    studentElement.appendChild(grades)
+                    let tableCourseIdValue = document.createElement("td")
+                    tableCourseIdValue.innerHTML = selectedCourse.id
+                    tableRow.appendChild(tableCourseIdValue)
+                    
+                    let tableCourseNameValue = document.createElement("td")
+                    tableCourseNameValue.innerHTML = selectedCourse.name
+                    tableRow.appendChild(tableCourseNameValue)
+
+                    let tableCoursePointScaleValue = document.createElement("td")
+                    tableCoursePointScaleValue.innerHTML = selectedCourse.pointScale
+                    tableRow.appendChild(tableCoursePointScaleValue)
+
+                    let tableMidtermValue = document.createElement("td")
+                    tableMidtermValue.innerHTML = studentCourse[1]
+                    tableRow.appendChild(tableMidtermValue)
+
+                    let tableFinalValue = document.createElement("td")
+                    tableFinalValue.innerHTML = studentCourse[2]
+                    tableRow.appendChild(tableFinalValue)
+                    
+                    let tableLetterValue = document.createElement("td")
+                    tableLetterValue.innerHTML = studentCourse[3]
+                    tableRow.appendChild(tableLetterValue)
+
+                    sumAvg = sumAvg + (studentCourse[1] * 0.4) + (studentCourse[2] * 0.6)
+                    table.appendChild(tableRow)
                 }
             })
         })
 
         studentInfoList.appendChild(studentElement)
+        if(selectedStudent.course.length > 0){
+            let tableRow = document.createElement("tr")
+            let gpa = document.createElement("td")
+            gpa.innerHTML = "AVG " + sumAvg / selectedStudent.course.length
+            tableRow.appendChild(gpa)
+            table.appendChild(tableRow)
+            studentInfoList.appendChild(table)
+        }
         studentInfoSection.appendChild(studentInfoList)
 
     })
