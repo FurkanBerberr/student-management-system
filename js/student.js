@@ -68,6 +68,7 @@ function createStudent(){
     inputSurname.type = "text"
     inputSurname.value = sSurname.value
     inputSurname.setAttribute("readonly", "readonly")
+    
 
     // Check if inputs are valid and full
     if(sId.value <= 0 || sName.value == "" || sId.value == "" || sSurname.value == ""){
