@@ -157,6 +157,16 @@ function createCourse(){
             // Storing the first id to check later
             firstId = inputId.value
         }else{
+            let sameId = false
+            courses.forEach(function(oneCourse){
+                if(oneCourse.id == inputId.value && oneCourse.id != firstId){
+                    sameId = true
+                }
+            })
+            if(sameId){
+                alert("Courses can not have the same id")
+                return
+            }
             // Checking the edited values are valid or not
             if(inputId.value <= 0 || inputName.value == "" || inputId.value == ""){
                 alert("Check the edit imputs are valid and full")
@@ -172,7 +182,9 @@ function createCourse(){
 
             students.forEach(function(selectedStudent){
                 selectedStudent.course.forEach(function(studentCourse){
-                    studentCourse[0] = inputId.value
+                    if(studentCourse[0] == firstId){
+                        studentCourse[0] = inputId.value
+                    }
                 })
             })
 

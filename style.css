@@ -56,7 +56,6 @@ body{
     padding: 12px 20px;
     margin: 8px 0px;
     box-sizing: border-box
-
 }
 
 .addCourse button, .addStudent button, .selectedCourse button{
@@ -71,7 +70,7 @@ body{
     opacity: 0.7;
 }
 
-.addCourse select {
+.addCourse select, .selectedCourse select{
     width: 75%;
     padding: 10px 15px;
     border-radius: 10px;
@@ -82,13 +81,13 @@ body{
 
 /*----------------Right Column----------------*/
 
-.courseListsContainer, .studentListsContainer, .courseStudentsListContainer{
+.courseListsContainer, .studentListsContainer, .courseStudentsListContainer, .studentInfoSection{
     display: flex;
     justify-content: center;
     margin-top: 50px;
 }
 
-.courseLists, .studentLists, .courseStudentsList,.courseStudentsList ul{
+.courseLists, .studentLists, .courseStudentsList,.courseStudentsList ul, .studentInfoList{
     list-style: none;
 }
 
@@ -139,6 +138,13 @@ body{
     display: none;
 }
 
+.courseInnerStudentLists input{
+    padding: 7px 0px;
+    padding-left: 7px;
+    margin: 8px 0px;
+    box-sizing: border-box
+}
+
 .courseStudentName, .courseStudentSurname{
     max-width: 160px;
 }
@@ -149,4 +155,30 @@ body{
 
 .courseStudentMidScore, .courseStudentFScore, .letterGrade{
     max-width: 45px;
+}
+
+/*----------------Student Info Section----------------*/
+
+.studentInfoList table{
+    border-collapse: collapse;
+    width: 90%;
+}
+
+
+.studentInfoList td, .studentInfoList th {
+    border: 1px solid #333;
+    text-align: left;
+    padding: 7px;
+}
+
+.studentInfoList tr:nth-child(even) {
+    background-color: #D0B8A8;
+}
+
+.studentInfoList tr:nth-child(odd) {
+    background-color: #DFD3C3;
+}
+
+.studentInfoList tr td:last-child{
+    text-align: right;
 }

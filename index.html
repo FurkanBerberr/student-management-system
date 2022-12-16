@@ -51,6 +51,7 @@
             <input id="sSurname" type="text" placeholder="Student Surname" /><br />
             <button id="addStudentButton" type="button">Add Student</button>
           </form>
+          <input id="search" type="text" placeholder="Search" /><br />
         </div>
         <div class="studentListsContainer">
           <ul class="studentLists">
@@ -71,6 +72,11 @@
             <strong><label>Final Score:</label></strong><br />
             <input id="sFinalScore" type="number" placeholder="Final Score" min="0" /><br />
             <button id="addStudentToCourseButton" type="button">Add Student To Course</button><br /><br />
+            <select id="studentFilter">
+              <option value="all">All</option>
+              <option value="pStudent">Passed Student</option>
+              <option value="fStudent">Failed Student</option>
+            </select><br />
           </form>
         </div>
         <div class="courseStudentsListContainer">

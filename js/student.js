@@ -16,9 +16,11 @@ function Student(id, name, surname){
 
 // Selects
 const addStudentButton = document.querySelector("#addStudentButton")
+const searchInput = document.getElementById("search")
 
 // Events
 addStudentButton.addEventListener("click", createStudent)
+searchInput.addEventListener("keyup", searchFunction)
 
 // Functions
 function createStudent(){
@@ -172,6 +174,16 @@ function createStudent(){
             // Storing the first id to check later
             firstId = inputId.value
         }else{
+            let sameId = false
+            students.forEach(function(oneStudent){
+                if(oneStudent.id == inputId.value && oneStudent.id != firstId){
+                    sameId = true
+                }
+            })
+            if(sameId){
+                alert("Students can not have the same id")
+                return
+            }
             // Checking the edited values are valid or not
             if(inputId.value <= 0 || inputName.value == "" || inputId.value == "" || inputSurname.value == ""){
                 alert("Check the edit imputs are valid and full")
@@ -211,7 +223,7 @@ function createStudent(){
     infoButton.addEventListener("click", function(){
         const addStudentSection = document.querySelector(".addStudentSection")
         const studentInfoSection = document.querySelector(".studentInfoSection")
-        studentInfoSection.style.display = "unset"
+        studentInfoSection.style.display = "flex"
         addStudentSection.style.display = "none"
 
         let studentInfoList = document.querySelector(".studentInfoList")
@@ -224,7 +236,7 @@ function createStudent(){
 
         // Create H1 for title
         const studentTitle = document.createElement("h1")
-        studentTitle.innerHTML = inputId.value + " " + inputName.value + " " + inputSurname.value
+        studentTitle.innerHTML = inputId.value + "  " + inputName.value.toUpperCase() + " " + inputSurname.value.toUpperCase()
 
         let selectedStudent
         for (let i = 0; i < students.length; i++) {
@@ -234,6 +246,7 @@ function createStudent(){
         }  
 
         studentElement.appendChild(studentTitle)
+        studentElement.appendChild(document.createElement("br"))
 
         const table = document.createElement("table")
         const tableRowHeader = document.createElement("tr")
@@ -299,6 +312,7 @@ function createStudent(){
         if(selectedStudent.course.length > 0){
             let tableRow = document.createElement("tr")
             let gpa = document.createElement("td")
+            gpa.setAttribute("colspan", 6)
             gpa.innerHTML = "AVG " + sumAvg / selectedStudent.course.length
             tableRow.appendChild(gpa)
             table.appendChild(tableRow)
@@ -330,6 +344,21 @@ function createStudent(){
             }
         })
     })
+}
+
+function searchFunction(e){
+    let currentValue = e.target.value.toLowerCase()
+    const studentIds = document.querySelectorAll("input.studentId")
+    const studentNames = document.querySelectorAll("input.studentName")
+    const studentSurnames = document.querySelectorAll("input.studentSurname")
+    for(let i = 0; i < studentIds.length; i++){
+        if(studentIds[i].value.includes(currentValue) || studentNames[i].value.toLowerCase().includes(currentValue) || studentSurnames[i].value.toLowerCase().includes(currentValue)){
+            studentIds[i].parentNode.parentNode.style.display = ""
+        }else{
+            studentIds[i].parentNode.parentNode.style.display = "none"
+        }
+        
+    }
 }
 
 export { students, Student }

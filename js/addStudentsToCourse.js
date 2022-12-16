@@ -9,9 +9,11 @@ var selectedCourse
 
 // Selects
 const addStudentToCourseButton = document.querySelector("#addStudentToCourseButton")
+const studentFilter = document.querySelector("#studentFilter")
 
 // Events
 addStudentToCourseButton.addEventListener("click", addStudentsToCourse)
+studentFilter.addEventListener("click", filterStudent)
 
 
 // Functions
@@ -102,6 +104,9 @@ function addStudentsToCourse(){
     inputLetterGrade.type = "text"
     inputLetterGrade.value = letterGrade
     inputLetterGrade.setAttribute("readonly", "readonly")
+    if(letterGrade == "F"){
+        studentCourseDiv.classList.add("failed")
+    }
 
 
     // Adding students grades into student obj
@@ -161,6 +166,7 @@ function addStudentsToCourse(){
                 alert("Check the edit imputs are valid and full")
                 return
             }
+            let lGrade = calculateLetterGrade(midtermScore.value, finalScore.value, selectedCourse.pointScale)
             // If they valid changing the stored student values
             students.forEach(function(selectedStudent){
                 if(selectedStudent.id == inputId.value){
@@ -168,13 +174,19 @@ function addStudentsToCourse(){
                         if(studentCourse[0] == selectedCourse.id){
                             studentCourse[1] = midtermScore.value
                             studentCourse[2] = finalScore.value
-                            studentCourse[3] = calculateLetterGrade(midtermScore.value, finalScore.value, selectedCourse.pointScale)
+                            studentCourse[3] = lGrade
                         }
                     })
                 }
             })
 
-            inputLetterGrade.value = calculateLetterGrade(midtermScore.value, finalScore.value, selectedCourse.pointScale)
+            inputLetterGrade.value = lGrade
+            if(lGrade == "F" && !studentCourseDiv.classList.contains("failed")){
+                studentCourseDiv.classList.add("failed")
+            }
+            if(lGrade != "F" && studentCourseDiv.classList.contains("failed")){
+                studentCourseDiv.classList.remove("failed")
+            }
             // Changing the icon for edit button
             editIcon.classList.remove("fa-check")
             editIcon.classList.add("fa-pen-to-square")
@@ -203,6 +215,35 @@ function addStudentsToCourse(){
         })
         courseStudentsList.removeChild(studentCourseDiv)
     })
+
+}
+
+// Filteres the students
+function filterStudent(e){
+    const courseStudents = document.querySelector(".courseStudentsList").childNodes
+    for(let i = 0; i < courseStudents.length; i++){
+        if(courseStudents[i].classList && courseStudents[i].classList.contains(selectedCourse.id)){
+            switch(e.target.value){
+                case "all":
+                    courseStudents[i].style.display = ""
+                    break
+                case "fStudent":
+                    if(courseStudents[i].classList.contains("failed")){
+                        courseStudents[i].style.display = ""
+                    }else{
+                        courseStudents[i].style.display = "none"
+                    }
+                    break
+                case "pStudent":
+                    if(!courseStudents[i].classList.contains("failed")){
+                        courseStudents[i].style.display = ""
+                    }else{
+                        courseStudents[i].style.display = "none"
+                    }
+                    break
+            }
+        }
+    }
 
 }
 
